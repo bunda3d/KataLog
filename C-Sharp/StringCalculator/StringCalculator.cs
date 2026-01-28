@@ -10,11 +10,14 @@
 			// Bail early on empty input, return 0
 			if (string.IsNullOrWhiteSpace(numbers)) return result;
 
-			// return value of single number input
-			int parsedNumber = int.Parse(numbers);
-			result += parsedNumber;
+			// return summed numbers from delimited string
+			foreach (string number in numbers.Split(','))
+			{
+				int parsedNumber = int.Parse(number);
+				sumTotal += parsedNumber;
+			}
 
-			return result;
+			return result = sumTotal;
 		}
 	}
 }
