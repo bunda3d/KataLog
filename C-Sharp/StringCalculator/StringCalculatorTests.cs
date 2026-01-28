@@ -24,17 +24,53 @@ namespace StringCalculator
 				- Solve things as simply as possible!
 		*/
 
-		[Fact]
-		public void Add_EmptyString_ReturnsZero()
+		[Theory]
+		[InlineData("", 0)]
+		public void Add_EmptyString_ReturnsZero(string input, int expectedResult)
 		{
-			// Arrange
+			// Given
 			var sut = new StringCalculator();
 
-			// Act
-			int result = sut.Add("");
+			// When
+			int result = sut.Add(input);
 
-			// Assert
-			Assert.Equal(0, result);
+			// Then
+			Assert.Equal(result, expectedResult);
+		}
+
+		[Theory]
+		[InlineData("1", 1)]
+		[InlineData("9", 9)]
+		[InlineData("0", 0)]
+		[InlineData("1", 1)]
+		public void Add_SingleChar_ReturnsSingleDigit(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(result, expectedResult);
+		}
+
+		[Theory]
+		[InlineData("1,1", 2)]
+		[InlineData("0,0", 0)]
+		[InlineData("0,10", 10)]
+		[InlineData("1,9", 10)]
+		[InlineData("6,7", 13)]
+		public void Add_2Chars_ReturnsNumericSum(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(result, expectedResult);
 		}
 	}
 }
