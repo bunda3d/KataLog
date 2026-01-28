@@ -79,5 +79,48 @@
 
 			return change;
 		}
+
+		public List<int> MakeChangePhase3(int amountDue, int amountPaid)
+		{
+			if (amountPaid < amountDue)
+				throw new ArgumentException("Amount paid must be greater than or equal to amount due.");
+
+			int changeTotal = amountPaid - amountDue;
+
+			// Phase 2 rule: round up to nearest 5
+			int remainder = changeTotal % 5;
+			if (remainder != 0)
+				changeTotal += (5 - remainder);
+
+			int[] coins = Phase3Denominations.ToArray();
+
+			// dp[x] = best list of coins to make x cents using Dynamic Programming
+			var dp = new List<int>[changeTotal + 1];
+			dp[0] = new List<int>();
+
+			for (int amount = 1; amount <= changeTotal; amount++)
+			{
+				List<int> best = null;
+
+				foreach (var coin in coins)
+				{
+					if (amount - coin < 0)
+						continue;
+
+					var prev = dp[amount - coin];
+					if (prev == null)
+						continue;
+
+					var candidate = new List<int>(prev) { coin };
+
+					if (best == null || candidate.Count < best.Count)
+						best = candidate;
+				}
+
+				dp[amount] = best;
+			}
+
+			return dp[changeTotal] ?? new List<int>();
+		}
 	}
 }

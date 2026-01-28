@@ -1,4 +1,4 @@
-namespace ParkingGarageChangeMachine
+ï»¿namespace ParkingGarageChangeMachine
 {
 	public class ParkingGarageChangeMachine_Test
 	{
@@ -9,22 +9,24 @@ namespace ParkingGarageChangeMachine
 		1. The machine accepts an amount due and an amount paid.
 		2. Return the correct change as a list of denominations.
 		3. Use U.S. denominations:
-				25¢, 10¢, 5¢, 1¢
+				25Â¢, 10Â¢, 5Â¢, 1Â¢
 		4. Always return the fewest coins possible.
 
 		PHASE 2 - Consultant Twist
 
 		The client adds a rule:
-			“We want to discourage use of pennies.
-			Only use pennies if absolutely necessary.”
+			â€œWe want to discourage use of pennies.
+			Only use pennies if absolutely necessary.â€
 
 		PHASE 3 - Another Twist
 
 		The garage introduces a new coin:
-			12¢ coin (yes, really)
+			12Â¢ coin (yes, really)
 		And they want the algorithm to adapt without rewriting everything.
 
 		*/
+
+		// Phase 1 Tests
 
 		[Theory]
 		[InlineData(100, 100, new int[] { })]
@@ -56,6 +58,8 @@ namespace ParkingGarageChangeMachine
 			Assert.Equal(expectedChange, change);
 		}
 
+		// Phase 2 - Consultant Twist
+
 		[Theory]
 		[InlineData(100, 103, new int[] { 1, 1, 1 })] // similar to MakeChange_Phase1_ExpectedChangeIsLeastAmountOfCoins, the smallest denomination should only be returned when necessary
 		[InlineData(150, 157, new int[] { 5, 1, 1 })] // only 2 pennies should be returned, not 7 pennies
@@ -67,15 +71,53 @@ namespace ParkingGarageChangeMachine
 		}
 
 		[Theory]
-		[InlineData(100, 103, new int[] { 5 })]          // 3¢ ? round up to 5¢
-		[InlineData(150, 157, new int[] { 10 })]         // 7¢ ? round up to 10¢
-		[InlineData(100, 120, new int[] { 10, 10 })]     // 20¢ ? already multiple of 5
-		public void MakeChange_Phase2_NoPennies_RoundUpToNearestFive(
-		int amountDue, int amountPaid, int[] expectedChange)
+		[InlineData(100, 103, new int[] { 5 })]          // 3Â¢ â†’ round up to 5Â¢
+		[InlineData(150, 157, new int[] { 10 })]         // 7Â¢ â†’ round up to 10Â¢
+		[InlineData(100, 120, new int[] { 10, 10 })]     // 20Â¢ â†’ already multiple of 5
+		public void MakeChange_Phase2_NoPennies_RoundUpToNearestFive(int amountDue, int amountPaid, int[] expectedChange)
 		{
 			var machine = new ParkingGarageChangeMachine();
 			var change = machine.MakeChangePhase2(amountDue, amountPaid);
 			Assert.Equal(expectedChange, change);
 		}
+
+		// Phase 3 - Another Twist
+
+		[Theory]
+		[InlineData(100, 112, new int[] { 10, 5 })]
+		public void MakeChange_Phase3_UsesTwelveCentCoin(int amountDue, int amountPaid, int[] expectedChange)
+		{
+			var machine = new ParkingGarageChangeMachine();
+			var change = machine.MakeChangePhase3(amountDue, amountPaid);
+			AssertSameCoins(expectedChange, change);
+		}
+
+		[Theory]
+		[InlineData(100, 124, new int[] { 25 })]
+		public void MakeChange_Phase3_UsesMultipleTwelveCentCoin(int amountDue, int amountPaid, int[] expectedChange)
+		{
+			var machine = new ParkingGarageChangeMachine();
+			var change = machine.MakeChangePhase3(amountDue, amountPaid);
+			AssertSameCoins(expectedChange, change);
+		}
+
+		[Theory]
+		[InlineData(100, 117, new int[] { 10, 10 })] // 17Â¢ rounds to 20Â¢ due to Phase2 No Pennies logic.
+		public void MakeChange_Phase3_StillOptimizesCoinCount(int amountDue, int amountPaid, int[] expectedChange)
+		{
+			var machine = new ParkingGarageChangeMachine();
+			var change = machine.MakeChangePhase3(amountDue, amountPaid);
+			AssertSameCoins(expectedChange, change);
+		}
+
+		#region [ Helpers ]
+
+		// Sort coin denominations so test doesn't fail due to ordering
+		private static void AssertSameCoins(int[] expected, List<int> actual)
+		{
+			Assert.Equal(expected.OrderBy(x => x), actual.OrderBy(x => x));
+		}
+
+		#endregion [ Helpers ]
 	}
 }
