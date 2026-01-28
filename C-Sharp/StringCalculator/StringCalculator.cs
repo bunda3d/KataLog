@@ -5,7 +5,6 @@
 		public int Add(string numbers)
 		{
 			var result = 0;
-			var sumTotal = 0;
 
 			// Bail early on empty input, return 0
 			if (string.IsNullOrWhiteSpace(numbers)) return result;
@@ -14,10 +13,10 @@
 			foreach (string number in numbers.Split(','))
 			{
 				int parsedNumber = int.Parse(number);
-				sumTotal += parsedNumber;
+				result += parsedNumber;
 			}
 
-			return result = sumTotal;
+			return result;
 		}
 	}
 }
