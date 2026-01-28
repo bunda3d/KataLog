@@ -5,31 +5,28 @@ namespace StringCalculator
 		#region [ Instructions ]
 
 		/*
-				STRING CALCULATOR KATA - STEP 1
 
-				The owner of the system wants a simple calculator that handles converting string inputs into sums.
+		STRING CALCULATOR KATA - STEP 1
 
-				REQUIREMENT:
-				Create a class 'StringCalculator' with a method:
-						public int Add(string numbers)
+		The owner of the system wants a simple calculator that handles converting string inputs into sums.
 
-				RULES:
-				1. The method can take 0, 1, or 2 numbers, separated by commas.
-				2. Examples of valid inputs: "", "1", "1,2".
-				3. For an empty string, the method should return 0.
-				4. For a single number, it returns the number alone.
-				5. For two numbers, it returns their sum.
+		REQUIREMENT:
+		Create a class 'StringCalculator' with a method:
+				public int Add(string numbers)
 
-				CONSTRAINTS:
-				- Start with the simplest test case of an empty string.
-				- Move to 1 and then 2 numbers.
-				- Solve things as simply as possible!
-		*/
+		RULES:
+		1. The method can take 0, 1, or 2 numbers, separated by commas.
+		2. Examples of valid inputs: "", "1", "1,2".
+		3. For an empty string, the method should return 0.
+		4. For a single number, it returns the number alone.
+		5. For two numbers, it returns their sum.
 
-		#endregion [ Instructions ]
+		CONSTRAINTS:
+		- Start with the simplest test case of an empty string.
+		- Move to 1 and then 2 numbers.
+		- Solve things as simply as possible!
 
-		/*
-    STRING CALCULATOR KATA - STEP 2
+		STRING CALCULATOR KATA - STEP 2
 
     Allow the Add method to handle an unknown amount of numbers.
 
@@ -38,6 +35,19 @@ namespace StringCalculator
     2. Continue to return the sum of all numbers.
     3. Ensure previous functionality (empty string, single number) remains intact.
 		*/
+
+		#endregion [ Instructions ]
+
+		/*
+    STRING CALCULATOR KATA - STEP 3
+
+    Allow the Add method to handle new lines between numbers (instead of commas).
+
+    RULES:
+    1. The following input is valid: "1\n2,3" (will equal 6).
+    2. Support both comma (,) and newline (\n) as delimiters.
+    3. You do NOT need to handle invalid inputs like "1,\n" (at least not yet).
+*/
 
 		[Theory]
 		[InlineData("", 0)]
@@ -95,6 +105,20 @@ namespace StringCalculator
 		[InlineData("100,1,100,1", 202)]
 		[InlineData("6,7,6,7,1", 27)]
 		public void Add_MultipleNumbers_ReturnsCorrectSum(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(result, expectedResult);
+		}
+
+		[Theory]
+		[InlineData("1\n2,3", 6)]
+		public void Add_NumbersInStringsWithMultipleDelimiters_ReturnsCorrectSum(string input, int expectedResult)
 		{
 			// Given
 			var sut = new StringCalculator();
