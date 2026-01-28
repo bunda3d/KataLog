@@ -3,6 +3,7 @@
 	public class ParkingGarageChangeMachine_Test
 	{
 		/*
+		KATA: Parking Garage Change Machine
 
 		PHASE 1
 
@@ -35,7 +36,7 @@
 		public void MakeChange_Phase1_ExpectedChangeMatchesChangeReturned(int amountDue, int amountPaid, int[] expectedChange)
 		{
 			var machine = new ParkingGarageChangeMachine();
-			var change = machine.MakeChange(amountDue, amountPaid);
+			var change = machine.MakeChangePhase1(amountDue, amountPaid);
 			Assert.Equal(expectedChange, change);
 		}
 
@@ -44,7 +45,7 @@
 		public void MakeChange_Phase1_PaymentLessThanAmountDueReturnsErrorMsg(int amountDue, int amountPaid)
 		{
 			var machine = new ParkingGarageChangeMachine();
-			var exception = Assert.Throws<ArgumentException>(() => machine.MakeChange(amountDue, amountPaid));
+			var exception = Assert.Throws<ArgumentException>(() => machine.MakeChangePhase1(amountDue, amountPaid));
 			Assert.Equal("Amount paid must be greater than or equal to amount due.", exception.Message);
 		}
 
@@ -54,7 +55,7 @@
 		public void MakeChange_Phase1_ExpectedChangeIsLeastAmountOfCoins(int amountDue, int amountPaid, int[] expectedChange)
 		{
 			var machine = new ParkingGarageChangeMachine();
-			var change = machine.MakeChange(amountDue, amountPaid);
+			var change = machine.MakeChangePhase1(amountDue, amountPaid);
 			Assert.Equal(expectedChange, change);
 		}
 
@@ -66,7 +67,7 @@
 		public void MakeChange_Phase2_DiscouragePennies(int amountDue, int amountPaid, int[] expectedChange)
 		{
 			var machine = new ParkingGarageChangeMachine();
-			var change = machine.MakeChange(amountDue, amountPaid);
+			var change = machine.MakeChangePhase1(amountDue, amountPaid);
 			Assert.Equal(expectedChange, change);
 		}
 
