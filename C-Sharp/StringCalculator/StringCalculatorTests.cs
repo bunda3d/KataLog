@@ -2,6 +2,8 @@ namespace StringCalculator
 {
 	public class StringCalculatorTests
 	{
+		#region [ Instructions ]
+
 		/*
 				STRING CALCULATOR KATA - STEP 1
 
@@ -24,6 +26,19 @@ namespace StringCalculator
 				- Solve things as simply as possible!
 		*/
 
+		#endregion [ Instructions ]
+
+		/*
+    STRING CALCULATOR KATA - STEP 2
+
+    Allow the Add method to handle an unknown amount of numbers.
+
+    RULES:
+    1. The method should handle any number of comma-separated integers (e.g., "1,2,3,4,5").
+    2. Continue to return the sum of all numbers.
+    3. Ensure previous functionality (empty string, single number) remains intact.
+		*/
+
 		[Theory]
 		[InlineData("", 0)]
 		public void Add_EmptyString_ReturnsZero(string input, int expectedResult)
@@ -43,7 +58,7 @@ namespace StringCalculator
 		[InlineData("9", 9)]
 		[InlineData("0", 0)]
 		[InlineData("1", 1)]
-		public void Add_SingleChar_ReturnsSingleDigit(string input, int expectedResult)
+		public void Add_SingleNumber_ReturnsSameValue(string input, int expectedResult)
 		{
 			// Given
 			var sut = new StringCalculator();
@@ -61,7 +76,25 @@ namespace StringCalculator
 		[InlineData("0,10", 10)]
 		[InlineData("1,9", 10)]
 		[InlineData("6,7", 13)]
-		public void Add_2Chars_ReturnsNumericSum(string input, int expectedResult)
+		public void Add_TwoNumbers_ReturnsCorrectSum(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(result, expectedResult);
+		}
+
+		[Theory]
+		[InlineData("1,1,1,1", 4)]
+		[InlineData("0,7,9,4", 20)]
+		[InlineData("5,5,0,1,9,10", 30)]
+		[InlineData("100,1,100,1", 202)]
+		[InlineData("6,7,6,7,1", 27)]
+		public void Add_MultipleNumbers_ReturnsCorrectSum(string input, int expectedResult)
 		{
 			// Given
 			var sut = new StringCalculator();
