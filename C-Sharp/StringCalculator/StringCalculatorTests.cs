@@ -7,7 +7,6 @@ namespace StringCalculator
 		/*
 
 		STRING CALCULATOR KATA - STEP 1
-
 		The owner of the system wants a simple calculator that handles converting string inputs into sums.
 
 		REQUIREMENT:
@@ -27,27 +26,33 @@ namespace StringCalculator
 		- Solve things as simply as possible!
 
 		STRING CALCULATOR KATA - STEP 2
-
     Allow the Add method to handle an unknown amount of numbers.
 
     RULES:
     1. The method should handle any number of comma-separated integers (e.g., "1,2,3,4,5").
     2. Continue to return the sum of all numbers.
     3. Ensure previous functionality (empty string, single number) remains intact.
-		*/
 
-		#endregion [ Instructions ]
-
-		/*
-    STRING CALCULATOR KATA - STEP 3
-
+		STRING CALCULATOR KATA - STEP 3
     Allow the Add method to handle new lines between numbers (instead of commas).
 
     RULES:
     1. The following input is valid: "1\n2,3" (will equal 6).
     2. Support both comma (,) and newline (\n) as delimiters.
     3. You do NOT need to handle invalid inputs like "1,\n" (at least not yet).
-*/
+
+    STRING CALCULATOR KATA - STEP 4
+    Support different delimiters defined at the start of the string.
+
+    RULES:
+    1. To change a delimiter, the input string will begin with a specific format: "//[delimiter]\n[numbers...]"
+    2. Example: "//;\n1;2" should return 3.
+    3. The first line is optional. If absent, use the default delimiters (comma and newline).
+    4. All previous scenarios (empty string, "1,2", "1\n2,3") must still work.
+
+		*/
+
+		#endregion [ Instructions ]
 
 		[Theory]
 		[InlineData("", 0)]
@@ -60,14 +65,14 @@ namespace StringCalculator
 			int result = sut.Add(input);
 
 			// Then
-			Assert.Equal(result, expectedResult);
+			Assert.Equal(expectedResult, result);
 		}
 
 		[Theory]
 		[InlineData("1", 1)]
 		[InlineData("9", 9)]
 		[InlineData("0", 0)]
-		[InlineData("1", 1)]
+		[InlineData("11", 11)]
 		public void Add_SingleNumber_ReturnsSameValue(string input, int expectedResult)
 		{
 			// Given
@@ -77,7 +82,7 @@ namespace StringCalculator
 			int result = sut.Add(input);
 
 			// Then
-			Assert.Equal(result, expectedResult);
+			Assert.Equal(expectedResult, result);
 		}
 
 		[Theory]
@@ -95,7 +100,7 @@ namespace StringCalculator
 			int result = sut.Add(input);
 
 			// Then
-			Assert.Equal(result, expectedResult);
+			Assert.Equal(expectedResult, result);
 		}
 
 		[Theory]
@@ -113,11 +118,14 @@ namespace StringCalculator
 			int result = sut.Add(input);
 
 			// Then
-			Assert.Equal(result, expectedResult);
+			Assert.Equal(expectedResult, result);
 		}
 
 		[Theory]
 		[InlineData("1\n2,3", 6)]
+		[InlineData(",1\n2,3,", 6)]
+		[InlineData("\n8,1\n2,3,\n20,", 34)]
+		[InlineData("\n200\n,\n2200,3", 2403)]
 		public void Add_NumbersInStringsWithMultipleDelimiters_ReturnsCorrectSum(string input, int expectedResult)
 		{
 			// Given
@@ -127,7 +135,23 @@ namespace StringCalculator
 			int result = sut.Add(input);
 
 			// Then
-			Assert.Equal(result, expectedResult);
+			Assert.Equal(expectedResult, result);
+		}
+
+		[Theory]
+		[InlineData("//;\n1;2", 3)]
+		[InlineData("//|||\n1|||2|||3", 6)]
+		[InlineData("//.\n1.2.5.111.11", 130)]
+		public void Add_CustomDelimiter_ReturnsSum(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(expectedResult, result);
 		}
 	}
 }
