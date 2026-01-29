@@ -9,10 +9,10 @@
 			var delimiters = defaultDelimiters;
 			var negativeNumbers = new List<string>();
 
-			// Check for new delimiter "//[delimiter]\n[numbers...]"
+			// Check for new delimiter(s) "//[delimiter]\n[numbers...]"
 			if (numbers.StartsWith("//") && numbers.Contains("\n"))
 			{
-				delimiters.Add(GetNewDelimiter(numbers));
+				delimiters.AddRange(GetNewDelimiter(numbers));
 				numbers = RemoveNewDelimiterSegment(numbers);
 			}
 
@@ -46,9 +46,20 @@
 			return result;
 		}
 
-		private static string GetNewDelimiter(string numbers)
+		private static IEnumerable<string> GetNewDelimiter(string numbers)
 		{
-			return numbers[2..numbers.IndexOf("\n")];
+			// Get new delimiter header segment
+			int newLineIndex = numbers.IndexOf("\n");
+			string header = numbers[2..newLineIndex];
+
+			// Scenario: 'add multiple new delims' (bracketed)
+			if (header.StartsWith("[") && header.EndsWith("]"))
+			{
+				var trimmedHeader = header[1..^1]; // Remove outer brackets first
+				return trimmedHeader.Split("][");  // use "][" as delimeter to get delimiters
+			}
+			// Scenario: 'add single new delim' (non-bracketed)
+			return new[] { header };
 		}
 
 		private static string RemoveNewDelimiterSegment(string numbers)

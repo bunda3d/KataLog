@@ -66,6 +66,13 @@ namespace StringCalculator
     1. Numbers bigger than 1000 should be ignored (treated as 0).
     2. Example: "2,1001" should return 2.
     3. Example: "1000,2" should return 1002 (1000 is included).
+
+    STRING CALCULATOR KATA - STEP 7 & 8 (Combined for logic)
+
+    1. Support delimiters of any length: "//[***]\n1***2***3" -> 6
+    2. Support multiple delimiters: "//[*][%]\n1*2%3" -> 6
+    3. Support multiple delimiters with length longer than one char: "//[**][%%]\n1**2%%3" -> 6
+
 		*/
 
 		#endregion [ Instructions ]
@@ -141,7 +148,7 @@ namespace StringCalculator
 		[InlineData("1\n2,3", 6)]
 		[InlineData(",1\n2,3,", 6)]
 		[InlineData("\n8,1\n2,3,\n20,", 34)]
-		[InlineData("\n200\n,\n2200,3", 2403)]
+		[InlineData("\n200\n,\n2200,3", 203)]
 		public void Add_NumbersInStringsWithMultipleDelimiters_ReturnsCorrectSum(string input, int expectedResult)
 		{
 			// Given
@@ -193,6 +200,22 @@ namespace StringCalculator
 		[InlineData("1002,9", 9)]
 		[InlineData("1001,6,7", 13)]
 		public void Add_NumbersGreaterThan1000SetToZero_ReturnsCorrectSum(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(expectedResult, result);
+		}
+
+		[Theory]
+		[InlineData("//[***]\n1***2***3", 6)]
+		[InlineData("//[*][%]\n1*2%3", 6)]
+		[InlineData("//[**][%%]\n1**2%%3", 6)]
+		public void Add_BracketedAndMultipleDelimiters_ReturnsSum(string input, int expectedResult)
 		{
 			// Given
 			var sut = new StringCalculator();
