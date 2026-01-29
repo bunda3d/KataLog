@@ -59,11 +59,6 @@ namespace StringCalculator
     3. If there are multiple negative numbers, show **all** of them in the exception message, separated by commas.
        Example: "-1,-2" -> throws exception with message "negatives not allowed: -1,-2"
 
-		*/
-
-		#endregion [ Instructions ]
-
-		/*
     STRING CALCULATOR KATA - STEP 6
     Ignore numbers bigger than 1000.
 
@@ -72,6 +67,8 @@ namespace StringCalculator
     2. Example: "2,1001" should return 2.
     3. Example: "1000,2" should return 1002 (1000 is included).
 		*/
+
+		#endregion [ Instructions ]
 
 		[Theory]
 		[InlineData("", 0)]
