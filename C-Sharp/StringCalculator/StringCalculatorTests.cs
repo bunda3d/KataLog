@@ -50,9 +50,28 @@ namespace StringCalculator
     3. The first line is optional. If absent, use the default delimiters (comma and newline).
     4. All previous scenarios (empty string, "1,2", "1\n2,3") must still work.
 
+    STRING CALCULATOR KATA - STEP 5
+    Handle negative numbers.
+
+    RULES:
+    1. Calling Add with a negative number will throw an exception.
+    2. The exception message must be "negatives not allowed: " followed by the negative number.
+    3. If there are multiple negative numbers, show **all** of them in the exception message, separated by commas.
+       Example: "-1,-2" -> throws exception with message "negatives not allowed: -1,-2"
+
 		*/
 
 		#endregion [ Instructions ]
+
+		/*
+    STRING CALCULATOR KATA - STEP 6
+    Ignore numbers bigger than 1000.
+
+    RULES:
+    1. Numbers bigger than 1000 should be ignored (treated as 0).
+    2. Example: "2,1001" should return 2.
+    3. Example: "1000,2" should return 1002 (1000 is included).
+		*/
 
 		[Theory]
 		[InlineData("", 0)]
@@ -143,6 +162,40 @@ namespace StringCalculator
 		[InlineData("//|||\n1|||2|||3", 6)]
 		[InlineData("//.\n1.2.5.111.11", 130)]
 		public void Add_CustomDelimiter_ReturnsSum(string input, int expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			int result = sut.Add(input);
+
+			// Then
+			Assert.Equal(expectedResult, result);
+		}
+
+		[Theory]
+		[InlineData("-1", "negatives not allowed: -1")]
+		[InlineData("-1, 1, -5", "negatives not allowed: -1, -5")]
+		[InlineData("-0, 1, -5, 8, 8, -55, -555", "negatives not allowed: -0, -5, -55, -555")]
+		public void Add_NegativeNumbers_ReturnsExceptionMessage(string input, string expectedResult)
+		{
+			// Given
+			var sut = new StringCalculator();
+
+			// When
+			var ex = Assert.Throws<ArgumentException>(() => sut.Add(input));
+
+			// Then
+			Assert.Equal(expectedResult, ex.Message);
+		}
+
+		[Theory]
+		[InlineData("1000,1", 1001)]
+		[InlineData("1001,0", 0)]
+		[InlineData("1111,10", 10)]
+		[InlineData("1002,9", 9)]
+		[InlineData("1001,6,7", 13)]
+		public void Add_NumbersGreaterThan1000SetToZero_ReturnsCorrectSum(string input, int expectedResult)
 		{
 			// Given
 			var sut = new StringCalculator();

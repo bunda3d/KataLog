@@ -7,6 +7,7 @@
 			var result = 0;
 			var defaultDelimiters = new List<string> { ",", "\n" };
 			var delimiters = defaultDelimiters;
+			var negativeNumbers = new List<string>();
 
 			// Check for new delimiter "//[delimiter]\n[numbers...]"
 			if (numbers.StartsWith("//") && numbers.Contains("\n"))
@@ -21,11 +22,25 @@
 			// Split input string by delimiters (if any), incl. multi-char delimiters
 			var splitNumbers = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
-			// return summed numbers from delimited string
+			// Return summed numbers from delimited string
 			foreach (string number in splitNumbers)
 			{
+				// Negatives not allowed
+				if (number.Trim().StartsWith("-"))
+					negativeNumbers.Add(number.Trim());
+
 				int parsedNumber = int.Parse(number);
+
+				// Larger than 1000 set to zero
+				if (parsedNumber > 1000) parsedNumber = 0;
+
 				result += parsedNumber;
+			}
+
+			if (negativeNumbers.Count > 0)
+			{
+				string negativeNumbersString = string.Join(", ", negativeNumbers);
+				throw new ArgumentException($"negatives not allowed: {negativeNumbersString}");
 			}
 
 			return result;
