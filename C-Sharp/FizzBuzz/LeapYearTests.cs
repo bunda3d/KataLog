@@ -10,8 +10,11 @@ public class LeapYearTests
 	*/
 
 	[Theory]
-	[InlineData(1920, true)]
-	public void Divider_ReturnsCorrectString_PerDivisibility(int year, bool isLeapYear)
+	[InlineData(1920, true)]  // years divisible by 4 are leap years
+	[InlineData(1900, false)] // years divisible by 100 are NOT leap years
+	[InlineData(2000, true)]  // years divisible by 400 ARE leap years
+	[InlineData(2025, false)] // default: non leap year
+	public void Divider_ReturnsIsLeapYearStatus_PerDivisibility(int year, bool isLeapYear)
 	{
 		// Given
 		var leapYear = new LeapYear();
