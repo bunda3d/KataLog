@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace RomanNumerals;
 
@@ -10,6 +6,27 @@ internal class RomanNumeralConverter
 {
 	public string Convert(int number)
 	{
-		return string.Empty;
+		var result = new StringBuilder();
+
+		// Consume 10s
+		while (number >= 10)
+		{
+			result.Append("X");
+			number -= 10;
+		}
+		// Consume 5s
+		while (number >= 5)
+		{
+			result.Append("V");
+			number -= 5;
+		}
+		// Consume 1s
+		while (number >= 1)
+		{
+			result.Append("I");
+			number -= 1;
+		}
+
+		return result.ToString();
 	}
 }

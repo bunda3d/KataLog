@@ -6,6 +6,14 @@
 Write a class RomanNumeralConverter with a method
 Convert(int number) that returns the Roman numeral string.
 
+1.	Symbols: I=1, V=5, X=10, L=50, C=100, D=500, M=1000.
+2.	Additive: Symbols are written from largest to smallest and added.
+	(e.g., VI = 5 + 1 = 6).
+3.	Subtractive: If a smaller symbol appears before a larger one, it is subtracted.
+•	I can be placed before V (5) and X (10) for 4 and 9.
+•	X can be placed before L (50) and C (100) for 40 and 90.
+•	C can be placed before D (500) and M (1000) for 400 and 900.
+
  1.	Fundamental Constants:
 •	1 ➔ "I"
 •	2 ➔ "II"
@@ -33,6 +41,10 @@ public class RomanNumeralTests
 {
 	[Theory]
 	[InlineData(1, "I")]
+	[InlineData(2, "II")]
+	[InlineData(3, "III")]
+	[InlineData(5, "V")]
+	[InlineData(10, "X")]
 	public void Convert_ReturnsExpectedRomanNumeral(int number, string numeral)
 	{
 		//Given
