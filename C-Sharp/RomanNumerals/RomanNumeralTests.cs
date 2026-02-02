@@ -45,6 +45,20 @@ public class RomanNumeralTests
 	[InlineData(3, "III")]
 	[InlineData(5, "V")]
 	[InlineData(10, "X")]
+	[InlineData(6, "VI")]
+	[InlineData(4, "IV")]
+	[InlineData(9, "IX")]
+	[InlineData(20, "XX")]
+	[InlineData(40, "XL")]
+	[InlineData(50, "L")]
+	[InlineData(90, "XC")]
+	[InlineData(100, "C")]
+	[InlineData(400, "CD")]
+	[InlineData(500, "D")]
+	[InlineData(900, "CM")]
+	[InlineData(1000, "M")]
+	[InlineData(1990, "MCMXC")]
+	[InlineData(3999, "MMMCMXCIX")]
 	public void Convert_ReturnsExpectedRomanNumeral(int number, string numeral)
 	{
 		//Given
